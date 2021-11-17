@@ -1,0 +1,30 @@
+﻿<Window x:Class="NBMMessagingApp.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:NBMMessagingApp"
+        mc:Ignorable="d"
+        Title="NBM Messaging" Height="498" Width="599" ResizeMode="NoResize" Topmost="False" WindowState="Normal">
+    <Grid HorizontalAlignment="Left" Width="599">
+        <Rectangle HorizontalAlignment="Left" Height="482" VerticalAlignment="Center" Width="90" Fill="#FFB81A1A"/>
+        <TextBox x:Name="headerTextBox" HorizontalAlignment="Left" Margin="105,64,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="464"/>
+        <TextBox x:Name="subjectTextBox" HorizontalAlignment="Left" Margin="105,126,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="464"/>
+        <Label x:Name="header_label" Content="Message Header" HorizontalAlignment="Left" Margin="105,39,0,0" VerticalAlignment="Top"/>
+        <Label x:Name="subject_label" Content="Subject" HorizontalAlignment="Left" Margin="105,102,0,0" VerticalAlignment="Top"/>
+        <Label x:Name="body_label" Content="Body" HorizontalAlignment="Left" Margin="105,163,0,0" VerticalAlignment="Top"/>
+        <TextBox x:Name="bodyTextBox" HorizontalAlignment="Left" Margin="105,194,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="464" Height="223"/>
+        <Button x:Name="sendMessageButton" Content="Send Message" HorizontalAlignment="Left" Margin="105,433,0,0" VerticalAlignment="Top" Width="82"/>
+        <Button x:Name="endSessionButton" Content="End Message Session" HorizontalAlignment="Left" Margin="437,433,0,0" VerticalAlignment="Top" Width="132"/>
+        <Rectangle HorizontalAlignment="Left" Height="19" VerticalAlignment="Top" Width="606" Fill="#FFB81A1A" Margin="90,0,0,0" RenderTransformOrigin="0.5,0.5">
+            <Rectangle.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform ScaleY="-1"/>
+                    <SkewTransform/>
+                    <RotateTransform/>
+                    <TranslateTransform/>
+                </TransformGroup>
+            </Rectangle.RenderTransform>
+        </Rectangle>
+    </Grid>
+</Window>
