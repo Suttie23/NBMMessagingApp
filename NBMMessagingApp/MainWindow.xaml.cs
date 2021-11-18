@@ -24,6 +24,7 @@ namespace NBMMessagingApp
     {
 
         List<Message> msgList = new List<Message>();
+        List<Email> emailList = new List<Email>();
 
         public MainWindow()
         {
@@ -53,29 +54,69 @@ namespace NBMMessagingApp
             string msgSender = senderTextBox.Text;
             string msgSubject = subjectTextBox.Text;
             string msgBody = bodyTextBox.Text;
+            string messageType;
             int msgID = rnd.Next();
             string sortCode = sortcodeTextBox.Text;
             string incidentType = indicentComboBox.SelectedItem?.ToString();
 
+            if (!string.IsNullOrEmpty(msgSubject) & msgSender.Contains("@"))
+            {
+                if (subjectTextBox.Text.Contains("SIR"))
+                {
+                    msgSubject = msgSubject + DateTime.Now.ToString("dd/mm/yy");
+                }
+                messageType = "E";
+                emailList.Add(new Email(msgSender, msgSubject, msgBody, msgID, messageType, sortCode, incidentType));
+            }
+            else if (msgSender.Contains("+44"))
+            {
+                messageType = "S";
+                msgList.Add(new Message(msgSender, msgBody, msgID, messageType));
+            }
+            else if (msgSender.Contains("@"))
+            {
+                messageType = "T";
+            }
 
-            msgList.Add(new Message(msgSender, msgSubject, msgBody, msgID));
+
+            senderTextBox.Clear();
+            subjectTextBox.Clear();
+            bodyTextBox.Clear();
+            sortcodeTextBox.Clear();
+            indicentComboBox.SelectedIndex = -1;
 
         }
 
         private void endSessionButton_Click(object sender, RoutedEventArgs e)
         {
 
+
         }
 
-        private void testDisplayButton_Click(object sender, RoutedEventArgs e)
+        private void testSMSButton_Click(object sender, RoutedEventArgs e)
         {
 
             foreach (Message msgNum in msgList)
             {
                 
-                testDisplayMessage.Text = msgNum.getData();
+                testDisplayMessage.Text = msgNum.getSMSData();
 
             }
+        }
+
+        private void testEmailButton_Click(object sender, RoutedEventArgs e)
+        {
+            foreach (Email emailNum in emailList)
+            {
+
+                testDisplayMessage.Text = emailNum.getEmailData();
+
+            }
+        }
+
+        private void testTweetButton_Click(object sender, RoutedEventArgs e)
+        {
+
         }
 
         private void senderHelpButton_Click(object sender, RoutedEventArgs e)
@@ -146,7 +187,6 @@ namespace NBMMessagingApp
                 bodyTextBox.Height = 327;
             }
         }
-
 
     }
 }

@@ -26,13 +26,15 @@
                 </TransformGroup>
             </Rectangle.RenderTransform>
         </Rectangle>
-        <TextBlock x:Name="testDisplayMessage" HorizontalAlignment="Left" Margin="616,217,0,0" Text="TextBlock" TextWrapping="Wrap" VerticalAlignment="Top" Height="223" Width="360"/>
-        <Button x:Name="testDisplayButton" Content="Test Display" HorizontalAlignment="Left" Margin="730,456,0,0" VerticalAlignment="Top" Width="132" Click="testDisplayButton_Click"/>
+        <TextBlock x:Name="testDisplayMessage" HorizontalAlignment="Left" Margin="616,172,0,0" Text="TextBlock" TextWrapping="Wrap" VerticalAlignment="Top" Height="334" Width="360"/>
+        <Button x:Name="testSMSButton" Content="Test SMS" HorizontalAlignment="Left" Margin="616,522,0,0" VerticalAlignment="Top" Width="85" Click="testSMSButton_Click"/>
         <Button x:Name="senderHelpButton" Content="Help" HorizontalAlignment="Left" Margin="592,44,0,0" VerticalAlignment="Top" Click="senderHelpButton_Click"/>
         <Button x:Name="subjectHelpButton" Content="Help" HorizontalAlignment="Left" Margin="592,107,0,0" VerticalAlignment="Top" Click="subjectHelpButton_Click"/>
         <TextBox x:Name="sortcodeTextBox" HorizontalAlignment="Left" Margin="105,163,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="464" Visibility="Hidden"/>
         <Label x:Name="sortcode_label" Content="Sort Code" HorizontalAlignment="Left" Margin="105,138,0,0" VerticalAlignment="Top" Visibility="Hidden"/>
         <Label x:Name="incident_label" Content="Incident Type" HorizontalAlignment="Left" Margin="105,201,0,0" VerticalAlignment="Top" Visibility="Hidden"/>
         <ComboBox x:Name="indicentComboBox" HorizontalAlignment="Left" Margin="105,224,0,0" VerticalAlignment="Top" Width="464" Visibility="Hidden"/>
+        <Button x:Name="testEmailButton" Content="Test Email" HorizontalAlignment="Left" Margin="754,522,0,0" VerticalAlignment="Top" Width="84" Click="testEmailButton_Click"/>
+        <Button x:Name="testTweetButton" Content="Test Tweet" HorizontalAlignment="Left" Margin="891,522,0,0" VerticalAlignment="Top" Width="85" Click="testTweetButton_Click"/>
     </Grid>
 </Window>
