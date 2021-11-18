@@ -41,7 +41,8 @@ namespace NBMMessagingApp
             } else
             {
                 return "Sender: " + this.messageSender + "\n\n" + "Subject: " + this.messageSubject + "\n\n" + "Message ID:" + this.messageType + this.messageID + "\n\n" + this.messageBody;
-            }            
+            }
+            
         }
 
     }

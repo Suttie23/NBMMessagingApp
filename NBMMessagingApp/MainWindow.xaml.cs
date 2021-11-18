@@ -31,6 +31,17 @@ namespace NBMMessagingApp
             InitializeComponent();
             this.WindowStartupLocation = WindowStartupLocation.CenterScreen;
 
+            indicentComboBox.Items.Add("Theft");
+            indicentComboBox.Items.Add("Staff Attack");
+            indicentComboBox.Items.Add("ATM Theft");
+            indicentComboBox.Items.Add("Raid");
+            indicentComboBox.Items.Add("Customer Attack");
+            indicentComboBox.Items.Add("Staff Abuse");
+            indicentComboBox.Items.Add("Bomb Threat");
+            indicentComboBox.Items.Add("Terrorism");
+            indicentComboBox.Items.Add("Suspicious Incident");
+            indicentComboBox.Items.Add("Intelligence");
+            indicentComboBox.Items.Add("Cash Loss");
 
         }
 
@@ -43,6 +54,9 @@ namespace NBMMessagingApp
             string msgSubject = subjectTextBox.Text;
             string msgBody = bodyTextBox.Text;
             int msgID = rnd.Next();
+            string sortCode = sortcodeTextBox.Text;
+            string incidentType = indicentComboBox.SelectedItem?.ToString();
+
 
             msgList.Add(new Message(msgSender, msgSubject, msgBody, msgID));
 
@@ -63,5 +77,76 @@ namespace NBMMessagingApp
 
             }
         }
+
+        private void senderHelpButton_Click(object sender, RoutedEventArgs e)
+        {
+            MessageBox.Show("When entering sender information, please adhere to the follwing to ensure correct categorisation: \n\n SMS: International phone number (+44) \n Email: Standard email address (Example@example.com) \n Tweet: Twitter ID (@Example)", "Sender Help");
+        }
+
+        private void subjectHelpButton_Click(object sender, RoutedEventArgs e)
+        {
+            MessageBox.Show("Please only enter a subject if sending an email, failure to do so could result in wrong categorisation. \n\n If the email subject is a Serious Incident report, please enter 'SIR' as subject matter.","Subject Help");
+        }
+
+        // Setting the size of the body based on the categorisation of message
+        private void bodyTextBox_GotKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)
+        {
+            if (!string.IsNullOrEmpty(subjectTextBox.Text) & senderTextBox.Text.Contains("@"))
+            {
+                this.bodyTextBox.MaxLength = 1024; 
+            }
+            else if (senderTextBox.Text.Contains("+44"))
+            {
+                this.bodyTextBox.MaxLength = 140;
+            }
+            else if (senderTextBox.Text.Contains("@"))
+            {
+                this.bodyTextBox.MaxLength = 140;
+            }
+
+        }
+
+        private void subjectTextBox_KeyUp(object sender, KeyEventArgs e)
+        {
+            if (subjectTextBox.Text.Contains("SIR"))
+            {
+
+                body_label.HorizontalAlignment = HorizontalAlignment.Left;
+                body_label.Margin = new Thickness(105, 252, 0, 0);
+                body_label.VerticalAlignment = VerticalAlignment.Top;
+
+                incident_label.Visibility = Visibility.Visible;
+                indicentComboBox.Visibility = Visibility.Visible;
+                sortcode_label.Visibility = Visibility.Visible;
+                sortcodeTextBox.Visibility = Visibility.Visible;
+
+                bodyTextBox.HorizontalAlignment = HorizontalAlignment.Left;
+                bodyTextBox.Margin = new Thickness(105, 283, 0, 0);
+                bodyTextBox.TextWrapping = TextWrapping.Wrap;
+                bodyTextBox.VerticalAlignment = VerticalAlignment.Top;
+                bodyTextBox.Width = 464;
+                bodyTextBox.Height = 223;
+            }
+            else
+            {
+                body_label.HorizontalAlignment = HorizontalAlignment.Left;
+                body_label.Margin = new Thickness(105, 149, 0, 0);
+                body_label.VerticalAlignment = VerticalAlignment.Top;
+
+                incident_label.Visibility = Visibility.Hidden;
+                indicentComboBox.Visibility = Visibility.Hidden;
+                sortcode_label.Visibility = Visibility.Hidden;
+                sortcodeTextBox.Visibility = Visibility.Hidden;
+
+                bodyTextBox.HorizontalAlignment = HorizontalAlignment.Left;
+                bodyTextBox.Margin = new Thickness(105, 176, 0, 0);
+                bodyTextBox.TextWrapping = TextWrapping.Wrap;
+                bodyTextBox.VerticalAlignment = VerticalAlignment.Top;
+                bodyTextBox.Width = 464;
+                bodyTextBox.Height = 327;
+            }
+        }
+
+
     }
 }
