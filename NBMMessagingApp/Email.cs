@@ -11,10 +11,12 @@ namespace NBMMessagingApp
         public string sortCode { get; set; }
         public string incidentType { get; set; }
 
-        public Email(string msgsender, string msgsubject, string msgbody, int msgID, string msgType, string sortCode, string incidentType ) : base(msgsender, msgbody, msgID, msgType)
+        public Email(string msgsender, string msgsubject, string msgbody, int msgID, string msgType, string msgSortCode, string msgIncidentType) : base(msgsender, msgbody, msgID, msgType)
         {
             this.messageSubject = msgsubject;
-            
+            this.sortCode = msgSortCode;
+            this.incidentType = msgIncidentType;
+
         }
 
         public string getEmailData()

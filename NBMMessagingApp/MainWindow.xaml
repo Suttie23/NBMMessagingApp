@@ -7,7 +7,6 @@
         mc:Ignorable="d"
         Title="NBM Messaging" Height="588" Width="1017" ResizeMode="NoResize" Topmost="False" WindowState="Normal" SizeToContent="WidthAndHeight">
     <Grid HorizontalAlignment="Center" Width="1017" Margin="0,0,0,-6">
-        <Rectangle HorizontalAlignment="Left" Height="578" VerticalAlignment="Center" Width="85" Fill="#FFB81A1A"/>
         <TextBox x:Name="senderTextBox" HorizontalAlignment="Left" Margin="105,46,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="464"/>
         <TextBox x:Name="subjectTextBox" HorizontalAlignment="Left" Margin="105,108,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="464" KeyUp="subjectTextBox_KeyUp"/>
         <Label x:Name="sender_label" Content="Sender" HorizontalAlignment="Left" Margin="105,21,0,0" VerticalAlignment="Top"/>
@@ -16,16 +15,6 @@
         <TextBox x:Name="bodyTextBox" HorizontalAlignment="Left" Margin="105,169,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="464" Height="337" GotKeyboardFocus="bodyTextBox_GotKeyboardFocus"/>
         <Button x:Name="sendMessageButton" Content="Send Message" HorizontalAlignment="Left" Margin="105,522,0,0" VerticalAlignment="Top" Width="82" Click="sendMessageButton_Click"/>
         <Button x:Name="endSessionButton" Content="End Message Session" HorizontalAlignment="Left" Margin="437,522,0,0" VerticalAlignment="Top" Width="132" Click="endSessionButton_Click"/>
-        <Rectangle HorizontalAlignment="Left" Height="19" VerticalAlignment="Top" Width="932" Fill="#FFB81A1A" Margin="85,0,0,0" RenderTransformOrigin="0.5,0.5">
-            <Rectangle.RenderTransform>
-                <TransformGroup>
-                    <ScaleTransform ScaleY="-1"/>
-                    <SkewTransform/>
-                    <RotateTransform/>
-                    <TranslateTransform/>
-                </TransformGroup>
-            </Rectangle.RenderTransform>
-        </Rectangle>
         <TextBlock x:Name="testDisplayMessage" HorizontalAlignment="Left" Margin="616,172,0,0" Text="TextBlock" TextWrapping="Wrap" VerticalAlignment="Top" Height="334" Width="360"/>
         <Button x:Name="testSMSButton" Content="Test SMS" HorizontalAlignment="Left" Margin="616,522,0,0" VerticalAlignment="Top" Width="85" Click="testSMSButton_Click"/>
         <Button x:Name="senderHelpButton" Content="Help" HorizontalAlignment="Left" Margin="592,44,0,0" VerticalAlignment="Top" Click="senderHelpButton_Click"/>

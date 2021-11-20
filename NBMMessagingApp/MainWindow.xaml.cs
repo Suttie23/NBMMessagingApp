@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -25,6 +26,7 @@ namespace NBMMessagingApp
 
         List<Message> msgList = new List<Message>();
         List<Email> emailList = new List<Email>();
+        List<Tweet> tweetList = new List<Tweet>();
 
         public MainWindow()
         {
@@ -56,26 +58,32 @@ namespace NBMMessagingApp
             string msgBody = bodyTextBox.Text;
             string messageType;
             int msgID = rnd.Next();
-            string sortCode = sortcodeTextBox.Text;
-            string incidentType = indicentComboBox.SelectedItem?.ToString();
+            string msgSortCode = sortcodeTextBox.Text;
+            string msgIncidentType = indicentComboBox.SelectedItem?.ToString();
 
-            if (!string.IsNullOrEmpty(msgSubject) & msgSender.Contains("@"))
+            string ePattern = @"^(?!\.)(""([^""\r\\]|\\[""\r\\])*""|" + @"([-a-z0-9!#$%&'*+/=?^_`{|}~]|(?<!\.)\.)*)(?<!\.)" + @"@[a-z0-9][\w\.-]*[a-z0-9]\.[a-z][a-z\.]*[a-z]$";
+            Regex emailFormat = new Regex(ePattern, RegexOptions.IgnoreCase);
+
+            if (emailFormat.IsMatch(msgSender))
             {
                 if (subjectTextBox.Text.Contains("SIR"))
                 {
                     msgSubject = msgSubject + DateTime.Now.ToString("dd/mm/yy");
                 }
                 messageType = "E";
-                emailList.Add(new Email(msgSender, msgSubject, msgBody, msgID, messageType, sortCode, incidentType));
+                emailList.Add(new Email(msgSender, msgSubject, msgBody, msgID, messageType, msgSortCode, msgIncidentType));
+
             }
             else if (msgSender.Contains("+44"))
             {
                 messageType = "S";
                 msgList.Add(new Message(msgSender, msgBody, msgID, messageType));
             }
-            else if (msgSender.Contains("@"))
+            else if (msgSender.Substring(0, 1).Equals("@"))
             {
                 messageType = "T";
+                tweetList.Add(new Tweet(msgSender, msgBody, msgID, messageType));
+
             }
 
 
@@ -111,12 +119,19 @@ namespace NBMMessagingApp
 
                 testDisplayMessage.Text = emailNum.getEmailData();
 
+
             }
         }
 
         private void testTweetButton_Click(object sender, RoutedEventArgs e)
         {
+            foreach (Tweet tweetNum in tweetList)
+            {
 
+                testDisplayMessage.Text = tweetNum.getTweetData();
+
+
+            }
         }
 
         private void senderHelpButton_Click(object sender, RoutedEventArgs e)
