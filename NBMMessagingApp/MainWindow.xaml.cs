@@ -66,6 +66,7 @@ namespace NBMMessagingApp
 
             if (emailFormat.IsMatch(msgSender))
             {
+
                 if (subjectTextBox.Text.Contains("SIR"))
                 {
                     msgSubject = msgSubject + DateTime.Now.ToString("dd/mm/yy");
@@ -84,14 +85,16 @@ namespace NBMMessagingApp
                 messageType = "T";
                 tweetList.Add(new Tweet(msgSender, msgBody, msgID, messageType));
 
+            } else
+            {
+                MessageBox.Show("Incorrect formatting, please enter valid sender details. See HELP button for more information", "ERROR");
+                senderTextBox.Clear();
             }
 
 
-            senderTextBox.Clear();
-            subjectTextBox.Clear();
-            bodyTextBox.Clear();
-            sortcodeTextBox.Clear();
-            indicentComboBox.SelectedIndex = -1;
+            clearInput();
+            visibleSIR();
+            visibleSubject();
 
         }
 
@@ -164,6 +167,21 @@ namespace NBMMessagingApp
 
         private void subjectTextBox_KeyUp(object sender, KeyEventArgs e)
         {
+
+            visibleSIR();
+
+        }
+
+        private void senderTextBox_KeyUp(object sender, KeyEventArgs e)
+        {
+
+            visibleSubject();
+ 
+        }
+
+        private void visibleSIR()
+        {
+
             if (subjectTextBox.Text.Contains("SIR"))
             {
 
@@ -201,6 +219,41 @@ namespace NBMMessagingApp
                 bodyTextBox.Width = 464;
                 bodyTextBox.Height = 327;
             }
+
+        }
+
+        private void visibleSubject()
+        {
+
+            string ePattern = @"^(?!\.)(""([^""\r\\]|\\[""\r\\])*""|" + @"([-a-z0-9!#$%&'*+/=?^_`{|}~]|(?<!\.)\.)*)(?<!\.)" + @"@[a-z0-9][\w\.-]*[a-z0-9]\.[a-z][a-z\.]*[a-z]$";
+            Regex emailFormat = new Regex(ePattern, RegexOptions.IgnoreCase);
+
+            if (emailFormat.IsMatch(senderTextBox.Text))
+            {
+
+                subject_label.Visibility = Visibility.Visible;
+                subjectTextBox.Visibility = Visibility.Visible;
+                subjectHelpButton.Visibility = Visibility.Visible;
+
+            }
+            else
+            {
+
+                subject_label.Visibility = Visibility.Hidden;
+                subjectTextBox.Visibility = Visibility.Hidden;
+                subjectHelpButton.Visibility = Visibility.Hidden;
+
+            }
+
+        }
+
+        private void clearInput()
+        {
+            senderTextBox.Clear();
+            subjectTextBox.Clear();
+            bodyTextBox.Clear();
+            sortcodeTextBox.Clear();
+            indicentComboBox.SelectedIndex = -1;
         }
 
     }
