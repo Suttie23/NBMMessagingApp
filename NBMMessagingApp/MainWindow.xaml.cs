@@ -64,6 +64,10 @@ namespace NBMMessagingApp
             string ePattern = @"^(?!\.)(""([^""\r\\]|\\[""\r\\])*""|" + @"([-a-z0-9!#$%&'*+/=?^_`{|}~]|(?<!\.)\.)*)(?<!\.)" + @"@[a-z0-9][\w\.-]*[a-z0-9]\.[a-z][a-z\.]*[a-z]$";
             Regex emailFormat = new Regex(ePattern, RegexOptions.IgnoreCase);
 
+            string phonePattern = @"^(((\+44\s?\d{4}|\(?0\d{4}\)?)\s?\d{3}\s?\d{3})|((\+44\s?\d{3}|\(?0\d{3}\)?)\s?\d{3}\s?\d{4})|((\+44\s?\d{2}|\(?0\d{2}\)?)\s?\d{4}\s?\d{4}))(\s?\#(\d{4}|\d{3}))?$";
+            Regex phoneFormat = new Regex(phonePattern, RegexOptions.IgnoreCase);
+
+            // Validate email address, set message type and construct new email
             if (emailFormat.IsMatch(msgSender))
             {
 
@@ -74,13 +78,11 @@ namespace NBMMessagingApp
                 messageType = "E";
                 emailList.Add(new Email(msgSender, msgSubject, msgBody, msgID, messageType, msgSortCode, msgIncidentType));
 
-            }
-            else if (msgSender.Contains("+44"))
+            } else if (phoneFormat.IsMatch(msgSender))
             {
                 messageType = "S";
                 msgList.Add(new Message(msgSender, msgBody, msgID, messageType));
-            }
-            else if (msgSender.Substring(0, 1).Equals("@"))
+            } else if (msgSender.Substring(0, 1).Equals("@"))
             {
                 messageType = "T";
                 tweetList.Add(new Tweet(msgSender, msgBody, msgID, messageType));
@@ -122,7 +124,6 @@ namespace NBMMessagingApp
 
                 testDisplayMessage.Text = emailNum.getEmailData();
 
-
             }
         }
 
@@ -133,13 +134,12 @@ namespace NBMMessagingApp
 
                 testDisplayMessage.Text = tweetNum.getTweetData();
 
-
             }
         }
 
         private void senderHelpButton_Click(object sender, RoutedEventArgs e)
         {
-            MessageBox.Show("When entering sender information, please adhere to the follwing to ensure correct categorisation: \n\n SMS: International phone number (+44) \n Email: Standard email address (Example@example.com) \n Tweet: Twitter ID (@Example)", "Sender Help");
+            MessageBox.Show("When entering sender information, please adhere to the follwing to ensure correct categorisation: \n\n SMS: International phone number (+447222555555 / +44 7222 555555) \n Email: Standard email address (Example@example.com) \n Tweet: Twitter ID (@Example)", "Sender Help");
         }
 
         private void subjectHelpButton_Click(object sender, RoutedEventArgs e)
