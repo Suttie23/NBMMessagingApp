@@ -25,9 +25,13 @@ namespace NBMMessagingApp
     {
 
         List<Message> msgList = new List<Message>();
+
         List<Email> emailList = new List<Email>();
         List<SIREmail> SIREmailList = new List<SIREmail>();
+
         List<Tweet> tweetList = new List<Tweet>();
+        List<string> hashTagList = new List<string>();
+        List<string> mentionList = new List<string>();
 
         public MainWindow()
         {
@@ -115,6 +119,27 @@ namespace NBMMessagingApp
             } else if (msgSender.Substring(0, 1).Equals("@"))
             {
                 messageType = "T";
+
+                var tags = bodyTextBox.Text.Split(" ");
+                for (int i = 0; i < tags.Length; i++)
+                {
+                    if (tags[i].Contains("#"))
+                    {
+                        hashTagList.Add(tags[i]);
+                    }
+
+                }
+
+                var mentions = bodyTextBox.Text.Split(" ");
+                for (int i = 0; i < mentions.Length; i++)
+                {
+                    if (mentions[i].Contains("@"))
+                    {
+                        mentionList.Add(mentions[i]);
+                    }
+
+                }
+
                 tweetList.Add(new Tweet(msgSender, msgBody, msgID, messageType));
 
             } else
@@ -132,7 +157,17 @@ namespace NBMMessagingApp
         private void endSessionButton_Click(object sender, RoutedEventArgs e)
         {
 
+            string SIRLine = "";
+            foreach (SIREmail SIREmailNum in SIREmailList)
+            {
+                SIRLine = SIRLine + "\nSort Code: " + SIREmailNum.sortCode + " / Incident Type: " + SIREmailNum.incidentType + "\n";
+            }
 
+            MessageBox.Show(SIRLine, "SIR LIST");
+            MessageBox.Show(String.Join("\n", hashTagList), "TRENDING ON TWITTER");
+            MessageBox.Show(String.Join("\n", mentionList), "MENTIONS");
+
+            countHash();
         }
 
         private void testSMSButton_Click(object sender, RoutedEventArgs e)
@@ -293,6 +328,10 @@ namespace NBMMessagingApp
             bodyTextBox.Clear();
             sortcodeTextBox.Clear();
             indicentComboBox.SelectedIndex = -1;
+        }
+
+        private void countHash()
+        {
         }
 
 

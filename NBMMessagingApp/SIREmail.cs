@@ -27,6 +27,13 @@ namespace NBMMessagingApp
 
         }
 
+        public string getSIRList()
+        {
+
+            return "Sort Code: " + this.sortCode + "\n\n" + "Incident Type: " + this.incidentType + "\n\n";
+
+        }
+
         public string sanitizeSIREmail(string msgbody)
         {
 

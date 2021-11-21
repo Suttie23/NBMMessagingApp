@@ -15,14 +15,15 @@ namespace NBMMessagingApp
         {
 
 
-
         }
 
         public string getTweetData()
         {
 
-            return "Message ID:" + this.messageType + this.messageID + "\n\n" + "Sender: " + this.messageSender + "\n\n" + this.sanitisedBody;
+            return "Message ID:" + this.messageType + this.messageID + "\n\n" + "Sender: " + this.messageSender + "\n\n" + this.sanitisedBody + "\n\n\n\n" + this.hashTags;
 
         }
+
     }
+
 }
