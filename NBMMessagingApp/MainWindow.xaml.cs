@@ -26,6 +26,7 @@ namespace NBMMessagingApp
 
         List<Message> msgList = new List<Message>();
         List<Email> emailList = new List<Email>();
+        List<SIREmail> SIREmailList = new List<SIREmail>();
         List<Tweet> tweetList = new List<Tweet>();
 
         public MainWindow()
@@ -67,16 +68,45 @@ namespace NBMMessagingApp
             string phonePattern = @"^(((\+44\s?\d{4}|\(?0\d{4}\)?)\s?\d{3}\s?\d{3})|((\+44\s?\d{3}|\(?0\d{3}\)?)\s?\d{3}\s?\d{4})|((\+44\s?\d{2}|\(?0\d{2}\)?)\s?\d{4}\s?\d{4}))(\s?\#(\d{4}|\d{3}))?$";
             Regex phoneFormat = new Regex(phonePattern, RegexOptions.IgnoreCase);
 
-            // Validate email address, set message type and construct new email
+            string sortPattern = @"^\d\d-\d\d-\d\d$";
+            Regex sortFormat = new Regex(sortPattern, RegexOptions.IgnoreCase);
+
+            bool validSIR = false;
+
+            // Validate sender input and construct a new SMS, Email or Tweet based on the type of message
             if (emailFormat.IsMatch(msgSender))
             {
 
+                messageType = "E";
+
                 if (subjectTextBox.Text.Contains("SIR"))
                 {
+                    
                     msgSubject = msgSubject + DateTime.Now.ToString("dd/mm/yy");
+
+                    if (sortFormat.IsMatch(msgSortCode))
+                    {
+
+                        validSIR = true;
+
+                        if (validSIR == true)
+                        {
+                            SIREmailList.Add(new SIREmail(msgSender, msgSubject, msgBody, msgID, messageType, msgSortCode, msgIncidentType));
+                            MessageBox.Show("SIR email added", "ERROR");
+                        }
+
+                    } else
+                    {
+                        MessageBox.Show("Invalid sort code, enter in format: ##-##-##", "ERROR");
+                        sortcodeTextBox.Clear();
+                    }
+
+                } else
+                {
+                    MessageBox.Show("Email added", "ERROR");
+                    emailList.Add(new Email(msgSender, msgSubject, msgBody, msgID, messageType));
                 }
-                messageType = "E";
-                emailList.Add(new Email(msgSender, msgSubject, msgBody, msgID, messageType, msgSortCode, msgIncidentType));
+
 
             } else if (phoneFormat.IsMatch(msgSender))
             {
@@ -92,7 +122,6 @@ namespace NBMMessagingApp
                 MessageBox.Show("Incorrect formatting, please enter valid sender details. See HELP button for more information", "ERROR");
                 senderTextBox.Clear();
             }
-
 
             clearInput();
             visibleSIR();
@@ -123,6 +152,16 @@ namespace NBMMessagingApp
             {
 
                 testDisplayMessage.Text = emailNum.getEmailData();
+
+            }
+        }
+
+        private void testSIREmailButton_Click(object sender, RoutedEventArgs e)
+        {
+            foreach (SIREmail SIREmailNum in SIREmailList)
+            {
+
+                testDisplayMessage.Text = SIREmailNum.getSIREmailData();
 
             }
         }
@@ -255,6 +294,7 @@ namespace NBMMessagingApp
             sortcodeTextBox.Clear();
             indicentComboBox.SelectedIndex = -1;
         }
+
 
     }
 }

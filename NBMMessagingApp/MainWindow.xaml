@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:NBMMessagingApp"
         mc:Ignorable="d"
-        Title="NBM Messaging" Height="588" Width="1017" ResizeMode="NoResize" Topmost="False" WindowState="Normal" SizeToContent="WidthAndHeight">
+        Title="NBM Messaging" Height="612" Width="1017" ResizeMode="NoResize" Topmost="False" WindowState="Normal">
     <Grid HorizontalAlignment="Center" Width="1017" Margin="0,0,0,-6">
         <TextBox x:Name="senderTextBox" HorizontalAlignment="Left" Margin="105,46,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="464" KeyUp="senderTextBox_KeyUp"/>
         <TextBox x:Name="subjectTextBox" HorizontalAlignment="Left" Margin="105,108,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="464" KeyUp="subjectTextBox_KeyUp" Visibility="Hidden"/>
@@ -25,5 +25,6 @@
         <ComboBox x:Name="indicentComboBox" HorizontalAlignment="Left" Margin="105,224,0,0" VerticalAlignment="Top" Width="464" Visibility="Hidden"/>
         <Button x:Name="testEmailButton" Content="Test Email" HorizontalAlignment="Left" Margin="754,522,0,0" VerticalAlignment="Top" Width="84" Click="testEmailButton_Click"/>
         <Button x:Name="testTweetButton" Content="Test Tweet" HorizontalAlignment="Left" Margin="891,522,0,0" VerticalAlignment="Top" Width="85" Click="testTweetButton_Click"/>
+        <Button x:Name="testSIREmailButton" Content="Test SIR Email" HorizontalAlignment="Left" Margin="754,561,0,0" VerticalAlignment="Top" Width="84" Click="testSIREmailButton_Click"/>
     </Grid>
 </Window>
