@@ -7,10 +7,12 @@ namespace NBMMessagingApp
     class SIREmail : Message
     {
 
+        // Getters / Setters
         public string messageSubject { get; set; }
         public string sortCode { get; set; }
         public string incidentType { get; set; }
 
+        // SIREmail Constructor
         public SIREmail(string msgsender, string msgsubject, string msgbody, int msgID, string msgType, string msgSortCode, string msgIncidentType) : base(msgsender, msgbody, msgID, msgType)
         {
             this.messageSubject = msgsubject;
@@ -20,6 +22,7 @@ namespace NBMMessagingApp
 
         }
 
+        // SIREmail ToString
         public string getSIREmailData()
         {
 
@@ -27,6 +30,7 @@ namespace NBMMessagingApp
 
         }
 
+        // Getting only the sortcode and incident type
         public string getSIRList()
         {
 
@@ -34,6 +38,7 @@ namespace NBMMessagingApp
 
         }
 
+        // Quarantine SIREmail
         public string sanitizeSIREmail(string msgbody)
         {
 

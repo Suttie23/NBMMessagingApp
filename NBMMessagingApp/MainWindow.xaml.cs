@@ -42,17 +42,17 @@ namespace NBMMessagingApp
             this.WindowStartupLocation = WindowStartupLocation.CenterScreen;
 
             // Populating combo box
-            indicentComboBox.Items.Add("Theft");
-            indicentComboBox.Items.Add("Staff Attack");
-            indicentComboBox.Items.Add("ATM Theft");
-            indicentComboBox.Items.Add("Raid");
-            indicentComboBox.Items.Add("Customer Attack");
-            indicentComboBox.Items.Add("Staff Abuse");
-            indicentComboBox.Items.Add("Bomb Threat");
-            indicentComboBox.Items.Add("Terrorism");
-            indicentComboBox.Items.Add("Suspicious Incident");
-            indicentComboBox.Items.Add("Intelligence");
-            indicentComboBox.Items.Add("Cash Loss");
+            incidentComboBox.Items.Add("Theft");
+            incidentComboBox.Items.Add("Staff Attack");
+            incidentComboBox.Items.Add("ATM Theft");
+            incidentComboBox.Items.Add("Raid");
+            incidentComboBox.Items.Add("Customer Attack");
+            incidentComboBox.Items.Add("Staff Abuse");
+            incidentComboBox.Items.Add("Bomb Threat");
+            incidentComboBox.Items.Add("Terrorism");
+            incidentComboBox.Items.Add("Suspicious Incident");
+            incidentComboBox.Items.Add("Intelligence");
+            incidentComboBox.Items.Add("Cash Loss");
 
         }
 
@@ -68,7 +68,7 @@ namespace NBMMessagingApp
             string messageType;
             int msgID = rnd.Next();
             string msgSortCode = sortcodeTextBox.Text;
-            string msgIncidentType = indicentComboBox.SelectedItem?.ToString();
+            string msgIncidentType = incidentComboBox.SelectedItem?.ToString();
 
             // Regex pattenrs for email, phone number and sort code
             string ePattern = @"^(?!\.)(""([^""\r\\]|\\[""\r\\])*""|" + @"([-a-z0-9!#$%&'*+/=?^_`{|}~]|(?<!\.)\.)*)(?<!\.)" + @"@[a-z0-9][\w\.-]*[a-z0-9]\.[a-z][a-z\.]*[a-z]$";
@@ -95,7 +95,7 @@ namespace NBMMessagingApp
                     msgSubject = msgSubject + DateTime.Now.ToString("dd/mm/yy");
 
                     // Validate sort code
-                    if (sortFormat.IsMatch(msgSortCode))
+                    if (sortFormat.IsMatch(msgSortCode) && !string.IsNullOrEmpty(incidentComboBox.Text))
                     {
 
                         validSIR = true;
@@ -107,11 +107,12 @@ namespace NBMMessagingApp
                             MessageBox.Show("SIR email sent", "SUCCESS");
                         }
 
+
                     } 
                     // Else, do not create new SIREmail and show error message
                     else
                     {
-                        MessageBox.Show("Invalid sort code, enter in format: ##-##-##", "ERROR");
+                        MessageBox.Show("Please ensure correct format for sort code. Enter in format: ##-##-## \n\n If missing, select an incident type.", "ERROR");
                         sortcodeTextBox.Clear();
                     }
 
@@ -259,7 +260,7 @@ namespace NBMMessagingApp
 
                 // Incident label / combo box & sortcode label / text box
                 incident_label.Visibility = Visibility.Visible;
-                indicentComboBox.Visibility = Visibility.Visible;
+                incidentComboBox.Visibility = Visibility.Visible;
                 sortcode_label.Visibility = Visibility.Visible;
                 sortcodeTextBox.Visibility = Visibility.Visible;
 
@@ -278,7 +279,7 @@ namespace NBMMessagingApp
                 body_label.VerticalAlignment = VerticalAlignment.Top;
 
                 incident_label.Visibility = Visibility.Hidden;
-                indicentComboBox.Visibility = Visibility.Hidden;
+                incidentComboBox.Visibility = Visibility.Hidden;
                 sortcode_label.Visibility = Visibility.Hidden;
                 sortcodeTextBox.Visibility = Visibility.Hidden;
 
@@ -328,7 +329,7 @@ namespace NBMMessagingApp
             subjectTextBox.Clear();
             bodyTextBox.Clear();
             sortcodeTextBox.Clear();
-            indicentComboBox.SelectedIndex = -1;
+            incidentComboBox.SelectedIndex = -1;
         }
 
         private void countHash()

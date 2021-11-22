@@ -8,12 +8,14 @@ namespace NBMMessagingApp
     class Message
     {
 
+        // Getters / Setters
         public string messageSender { get; set; }
         public string messageBody { get; set; }
         public string messageType { get; set; }
         public int messageID { get; set; }
         public string sanitisedBody { get; set; }
 
+        // Message Constructor
         public Message(string msgsender, string msgbody, int msgID, string msgType)
         {
             this.messageSender = msgsender;
@@ -24,6 +26,7 @@ namespace NBMMessagingApp
 
         }
 
+        // Sanitize message
         public string sanitizeMessage(string msgbody)
         {
             Dictionary<string, string> textSpeak = new Dictionary<string, string>();
@@ -56,6 +59,7 @@ namespace NBMMessagingApp
 
         }
 
+        // SMS ToString
         public string getSMSData()
         {
 

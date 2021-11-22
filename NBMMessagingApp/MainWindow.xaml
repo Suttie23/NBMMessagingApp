@@ -20,7 +20,7 @@
         <TextBox x:Name="sortcodeTextBox" HorizontalAlignment="Left" Margin="105,163,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="464" Visibility="Hidden"/>
         <Label x:Name="sortcode_label" Content="Sort Code" HorizontalAlignment="Left" Margin="105,138,0,0" VerticalAlignment="Top" Visibility="Hidden"/>
         <Label x:Name="incident_label" Content="Incident Type" HorizontalAlignment="Left" Margin="105,201,0,0" VerticalAlignment="Top" Visibility="Hidden"/>
-        <ComboBox x:Name="indicentComboBox" HorizontalAlignment="Left" Margin="105,224,0,0" VerticalAlignment="Top" Width="464" Visibility="Hidden"/>
+        <ComboBox x:Name="incidentComboBox" HorizontalAlignment="Left" Margin="105,224,0,0" VerticalAlignment="Top" Width="464" Visibility="Hidden"/>
         <Rectangle HorizontalAlignment="Center" Height="24" Margin="0,-3,0,0" Stroke="Black" VerticalAlignment="Top" Width="722" Fill="#FFE62540"/>
     </Grid>
 </Window>

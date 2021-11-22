@@ -6,9 +6,10 @@ namespace NBMMessagingApp
 {
     class Email : Message
     {
-
+        // Getters / Setter
         public string messageSubject { get; set; }
 
+        // Email Constructor
         public Email(string msgsender, string msgsubject, string msgbody, int msgID, string msgType) : base(msgsender, msgbody, msgID, msgType)
         {
             this.messageSubject = msgsubject;
@@ -16,11 +17,13 @@ namespace NBMMessagingApp
 
         }
 
+        // ToString
         public string getEmailData()
         {
                 return "Message ID:" + this.messageType + this.messageID + "\n\n" + "Sender: " + this.messageSender + "\n\n" + "Subject: " + this.messageSubject + "\n\n" + this.sanitisedBody;
         }
 
+        // Quarantine URLs in Email
         public string sanitizeEmail(string msgbody)
         {
 
