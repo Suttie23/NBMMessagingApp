@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -23,7 +24,7 @@ namespace NBMMessagingApp
     /// </summary>
     public partial class MainWindow : Window
     {
-
+        // Lists
         List<Message> msgList = new List<Message>();
 
         List<Email> emailList = new List<Email>();
@@ -31,6 +32,7 @@ namespace NBMMessagingApp
 
         List<Tweet> tweetList = new List<Tweet>();
         List<string> hashTagList = new List<string>();
+        SortedDictionary<int, string> trendList = new SortedDictionary<int, string>();
         List<string> mentionList = new List<string>();
 
         public MainWindow()
@@ -39,6 +41,7 @@ namespace NBMMessagingApp
             InitializeComponent();
             this.WindowStartupLocation = WindowStartupLocation.CenterScreen;
 
+            // Populating combo box
             indicentComboBox.Items.Add("Theft");
             indicentComboBox.Items.Add("Staff Attack");
             indicentComboBox.Items.Add("ATM Theft");
@@ -55,9 +58,10 @@ namespace NBMMessagingApp
 
         private void sendMessageButton_Click(object sender, RoutedEventArgs e)
         {
+
             Random rnd = new Random();
 
-            
+            // Variables
             string msgSender = senderTextBox.Text;
             string msgSubject = subjectTextBox.Text;
             string msgBody = bodyTextBox.Text;
@@ -66,6 +70,7 @@ namespace NBMMessagingApp
             string msgSortCode = sortcodeTextBox.Text;
             string msgIncidentType = indicentComboBox.SelectedItem?.ToString();
 
+            // Regex pattenrs for email, phone number and sort code
             string ePattern = @"^(?!\.)(""([^""\r\\]|\\[""\r\\])*""|" + @"([-a-z0-9!#$%&'*+/=?^_`{|}~]|(?<!\.)\.)*)(?<!\.)" + @"@[a-z0-9][\w\.-]*[a-z0-9]\.[a-z][a-z\.]*[a-z]$";
             Regex emailFormat = new Regex(ePattern, RegexOptions.IgnoreCase);
 
@@ -83,43 +88,56 @@ namespace NBMMessagingApp
 
                 messageType = "E";
 
+                // Check if the subject is a SIR
                 if (subjectTextBox.Text.Contains("SIR"))
                 {
                     
                     msgSubject = msgSubject + DateTime.Now.ToString("dd/mm/yy");
 
+                    // Validate sort code
                     if (sortFormat.IsMatch(msgSortCode))
                     {
 
                         validSIR = true;
 
+                        // If valid, create new SIREmail
                         if (validSIR == true)
                         {
                             SIREmailList.Add(new SIREmail(msgSender, msgSubject, msgBody, msgID, messageType, msgSortCode, msgIncidentType));
-                            MessageBox.Show("SIR email added", "ERROR");
+                            MessageBox.Show("SIR email sent", "SUCCESS");
                         }
 
-                    } else
+                    } 
+                    // Else, do not create new SIREmail and show error message
+                    else
                     {
                         MessageBox.Show("Invalid sort code, enter in format: ##-##-##", "ERROR");
                         sortcodeTextBox.Clear();
                     }
 
-                } else
+                } 
+                // If the message did not contain SIR, create a normal email
+                else
                 {
-                    MessageBox.Show("Email added", "ERROR");
+                    MessageBox.Show("Email sent", "SUCCESS");
                     emailList.Add(new Email(msgSender, msgSubject, msgBody, msgID, messageType));
                 }
 
-
-            } else if (phoneFormat.IsMatch(msgSender))
+            } 
+            // If the sender was not an email, check if it matches the phone format
+            else if (phoneFormat.IsMatch(msgSender))
             {
+                // Create SMS message
                 messageType = "S";
+                MessageBox.Show("SMS sent", "SUCCESS");
                 msgList.Add(new Message(msgSender, msgBody, msgID, messageType));
-            } else if (msgSender.Substring(0, 1).Equals("@"))
+            } 
+            // If the sender was not an email OR SMS, check if it matches a Tweet
+            else if (msgSender.Substring(0, 1).Equals("@"))
             {
                 messageType = "T";
 
+                // Picking out hashtags
                 var tags = bodyTextBox.Text.Split(" ");
                 for (int i = 0; i < tags.Length; i++)
                 {
@@ -130,6 +148,7 @@ namespace NBMMessagingApp
 
                 }
 
+                // Picking out mentions
                 var mentions = bodyTextBox.Text.Split(" ");
                 for (int i = 0; i < mentions.Length; i++)
                 {
@@ -140,9 +159,13 @@ namespace NBMMessagingApp
 
                 }
 
+                // Create a new Tweet
+                MessageBox.Show("Tweet sent", "SUCCESS");
                 tweetList.Add(new Tweet(msgSender, msgBody, msgID, messageType));
 
-            } else
+            }
+            // If sender does not match any accepted format, display an error.
+            else
             {
                 MessageBox.Show("Incorrect formatting, please enter valid sender details. See HELP button for more information", "ERROR");
                 senderTextBox.Clear();
@@ -154,6 +177,7 @@ namespace NBMMessagingApp
 
         }
 
+        // Displays the SIR list, Trending list and Mentions list before shutting down the application
         private void endSessionButton_Click(object sender, RoutedEventArgs e)
         {
 
@@ -164,61 +188,23 @@ namespace NBMMessagingApp
             }
 
             MessageBox.Show(SIRLine, "SIR LIST");
-            MessageBox.Show(String.Join("\n", hashTagList), "TRENDING ON TWITTER");
+            countHash();
+            MessageBox.Show(String.Join("\n", trendList.Reverse()), "TRENDING ON TWITTER");
             MessageBox.Show(String.Join("\n", mentionList), "MENTIONS");
 
-            countHash();
 
             toJSON();
+            System.Windows.Application.Current.Shutdown();
 
         }
 
-        private void testSMSButton_Click(object sender, RoutedEventArgs e)
-        {
-
-            foreach (Message msgNum in msgList)
-            {
-                
-                testDisplayMessage.Text = msgNum.getSMSData();
-
-            }
-        }
-
-        private void testEmailButton_Click(object sender, RoutedEventArgs e)
-        {
-            foreach (Email emailNum in emailList)
-            {
-
-                testDisplayMessage.Text = emailNum.getEmailData();
-
-            }
-        }
-
-        private void testSIREmailButton_Click(object sender, RoutedEventArgs e)
-        {
-            foreach (SIREmail SIREmailNum in SIREmailList)
-            {
-
-                testDisplayMessage.Text = SIREmailNum.getSIREmailData();
-
-            }
-        }
-
-        private void testTweetButton_Click(object sender, RoutedEventArgs e)
-        {
-            foreach (Tweet tweetNum in tweetList)
-            {
-
-                testDisplayMessage.Text = tweetNum.getTweetData();
-
-            }
-        }
-
+        // Sends a help message box to screen for sender field
         private void senderHelpButton_Click(object sender, RoutedEventArgs e)
         {
             MessageBox.Show("When entering sender information, please adhere to the follwing to ensure correct categorisation: \n\n SMS: International phone number (+447222555555 / +44 7222 555555) \n Email: Standard email address (Example@example.com) \n Tweet: Twitter ID (@Example)", "Sender Help");
         }
 
+        // Sends a help message box to screen for subject field
         private void subjectHelpButton_Click(object sender, RoutedEventArgs e)
         {
             MessageBox.Show("Please only enter a subject if sending an email, failure to do so could result in wrong categorisation. \n\n If the email subject is a Serious Incident report, please enter 'SIR' as subject matter.","Subject Help");
@@ -242,6 +228,7 @@ namespace NBMMessagingApp
 
         }
 
+        // When the key is lifted, call visibleSIR to check if the SIR fields should be visible
         private void subjectTextBox_KeyUp(object sender, KeyEventArgs e)
         {
 
@@ -249,6 +236,7 @@ namespace NBMMessagingApp
 
         }
 
+        // When the key is lifted, call visibleSubject to check if the subject field should be visible
         private void senderTextBox_KeyUp(object sender, KeyEventArgs e)
         {
 
@@ -256,21 +244,26 @@ namespace NBMMessagingApp
  
         }
 
+        // Method to alter the visibility and position of UI elements based on subject type
         private void visibleSIR()
         {
 
+            // If the subject box contains "SIR" then rearrange the body elements and make the incident type / sortcode fields visible
             if (subjectTextBox.Text.Contains("SIR"))
             {
 
+                // Body Label
                 body_label.HorizontalAlignment = HorizontalAlignment.Left;
                 body_label.Margin = new Thickness(105, 252, 0, 0);
                 body_label.VerticalAlignment = VerticalAlignment.Top;
 
+                // Incident label / combo box & sortcode label / text box
                 incident_label.Visibility = Visibility.Visible;
                 indicentComboBox.Visibility = Visibility.Visible;
                 sortcode_label.Visibility = Visibility.Visible;
                 sortcodeTextBox.Visibility = Visibility.Visible;
 
+                // Body text box
                 bodyTextBox.HorizontalAlignment = HorizontalAlignment.Left;
                 bodyTextBox.Margin = new Thickness(105, 283, 0, 0);
                 bodyTextBox.TextWrapping = TextWrapping.Wrap;
@@ -299,12 +292,15 @@ namespace NBMMessagingApp
 
         }
 
+        // Method to alter the visiblity and position of subject UI elements
         private void visibleSubject()
         {
 
+            // Setting the regex pattern for a valid email address
             string ePattern = @"^(?!\.)(""([^""\r\\]|\\[""\r\\])*""|" + @"([-a-z0-9!#$%&'*+/=?^_`{|}~]|(?<!\.)\.)*)(?<!\.)" + @"@[a-z0-9][\w\.-]*[a-z0-9]\.[a-z][a-z\.]*[a-z]$";
             Regex emailFormat = new Regex(ePattern, RegexOptions.IgnoreCase);
 
+            // if the regex pattern is matched by the sender text box, then make the subject field visible.
             if (emailFormat.IsMatch(senderTextBox.Text))
             {
 
@@ -313,6 +309,7 @@ namespace NBMMessagingApp
                 subjectHelpButton.Visibility = Visibility.Visible;
 
             }
+            // else, keep it hidden
             else
             {
 
@@ -324,6 +321,7 @@ namespace NBMMessagingApp
 
         }
 
+        // Method to clear textboxes
         private void clearInput()
         {
             senderTextBox.Clear();
@@ -335,12 +333,25 @@ namespace NBMMessagingApp
 
         private void countHash()
         {
+
+            var q = from x in hashTagList
+                    group x by x into g
+                    let count = g.Count()
+                    orderby count descending
+                    select new { Value = g.Key, Count = count };
+            foreach (var x in q)
+            {
+                trendList.Add(x.Count, x.Value);
+            }
+
         }
 
+        // Method to write all object lists to JSON format
         private void toJSON()
         {
+            //SMS to JSON
             var jsonSMSFormattedContent = Newtonsoft.Json.JsonConvert.SerializeObject(msgList);
-            string fileName = @"C:\Users\Suttie\source\repos\NBMMessagingApp\NBMMessagingApp\SMS.json";
+            string fileName = @"C:\Users\Suttie\source\repos\NBMMessagingApp\NBMMessagingApp\JSON Files\SMS.json";
 
             if (System.IO.File.Exists(fileName) == false)
             {
@@ -349,9 +360,10 @@ namespace NBMMessagingApp
             {
                 System.IO.File.Delete(fileName);
             }
-
+            
+            //Email to JSON
             var jsonEmailFormattedContent = Newtonsoft.Json.JsonConvert.SerializeObject(emailList);
-            string fileName2 = @"C:\Users\Suttie\source\repos\NBMMessagingApp\NBMMessagingApp\Email.json";
+            string fileName2 = @"C:\Users\Suttie\source\repos\NBMMessagingApp\NBMMessagingApp\JSON Files\Email.json";
 
             if (System.IO.File.Exists(fileName2) == false)
             {
@@ -362,8 +374,9 @@ namespace NBMMessagingApp
                 System.IO.File.Delete(fileName2);
             }
 
+            //SIR Email to JSON
             var jsonSIREmailFormattedContent = Newtonsoft.Json.JsonConvert.SerializeObject(SIREmailList);
-            string fileName3 = @"C:\Users\Suttie\source\repos\NBMMessagingApp\NBMMessagingApp\SIREmail.json";
+            string fileName3 = @"C:\Users\Suttie\source\repos\NBMMessagingApp\NBMMessagingApp\JSON Files\SIREmail.json";
 
             if (System.IO.File.Exists(fileName3) == false)
             {
@@ -374,8 +387,9 @@ namespace NBMMessagingApp
                 System.IO.File.Delete(fileName3);
             }
 
+            // Tweet to JSON
             var jsonTweetFormattedContent = Newtonsoft.Json.JsonConvert.SerializeObject(tweetList);
-            string fileName4 = @"C:\Users\Suttie\source\repos\NBMMessagingApp\NBMMessagingApp\Tweet.json";
+            string fileName4 = @"C:\Users\Suttie\source\repos\NBMMessagingApp\NBMMessagingApp\JSON Files\Tweet.json";
 
             if (System.IO.File.Exists(fileName4) == false)
             {

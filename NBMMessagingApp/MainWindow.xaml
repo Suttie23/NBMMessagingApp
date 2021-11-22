@@ -5,8 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:NBMMessagingApp"
         mc:Ignorable="d"
-        Title="NBM Messaging" Height="612" Width="1017" ResizeMode="NoResize" Topmost="False" WindowState="Normal">
-    <Grid HorizontalAlignment="Center" Width="1017" Margin="0,0,0,-6">
+        Title="NBM Messaging" Height="584" Width="556" ResizeMode="NoResize" Topmost="False" WindowState="Normal">
+    <Grid HorizontalAlignment="Center" Width="722" Margin="0,0,0,-31">
         <TextBox x:Name="senderTextBox" HorizontalAlignment="Left" Margin="105,46,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="464" KeyUp="senderTextBox_KeyUp"/>
         <TextBox x:Name="subjectTextBox" HorizontalAlignment="Left" Margin="105,108,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="464" KeyUp="subjectTextBox_KeyUp" Visibility="Hidden"/>
         <Label x:Name="sender_label" Content="Sender" HorizontalAlignment="Left" Margin="105,21,0,0" VerticalAlignment="Top"/>
@@ -15,16 +15,12 @@
         <TextBox x:Name="bodyTextBox" HorizontalAlignment="Left" Margin="105,169,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="464" Height="337" GotKeyboardFocus="bodyTextBox_GotKeyboardFocus"/>
         <Button x:Name="sendMessageButton" Content="Send Message" HorizontalAlignment="Left" Margin="105,522,0,0" VerticalAlignment="Top" Width="82" Click="sendMessageButton_Click"/>
         <Button x:Name="endSessionButton" Content="End Message Session" HorizontalAlignment="Left" Margin="437,522,0,0" VerticalAlignment="Top" Width="132" Click="endSessionButton_Click"/>
-        <TextBlock x:Name="testDisplayMessage" HorizontalAlignment="Left" Margin="616,172,0,0" Text="TextBlock" TextWrapping="Wrap" VerticalAlignment="Top" Height="334" Width="360"/>
-        <Button x:Name="testSMSButton" Content="Test SMS" HorizontalAlignment="Left" Margin="616,522,0,0" VerticalAlignment="Top" Width="85" Click="testSMSButton_Click"/>
         <Button x:Name="senderHelpButton" Content="Help" HorizontalAlignment="Left" Margin="592,44,0,0" VerticalAlignment="Top" Click="senderHelpButton_Click"/>
         <Button x:Name="subjectHelpButton" Content="Help" HorizontalAlignment="Left" Margin="592,107,0,0" VerticalAlignment="Top" Click="subjectHelpButton_Click" Visibility="Hidden"/>
         <TextBox x:Name="sortcodeTextBox" HorizontalAlignment="Left" Margin="105,163,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="464" Visibility="Hidden"/>
         <Label x:Name="sortcode_label" Content="Sort Code" HorizontalAlignment="Left" Margin="105,138,0,0" VerticalAlignment="Top" Visibility="Hidden"/>
         <Label x:Name="incident_label" Content="Incident Type" HorizontalAlignment="Left" Margin="105,201,0,0" VerticalAlignment="Top" Visibility="Hidden"/>
         <ComboBox x:Name="indicentComboBox" HorizontalAlignment="Left" Margin="105,224,0,0" VerticalAlignment="Top" Width="464" Visibility="Hidden"/>
-        <Button x:Name="testEmailButton" Content="Test Email" HorizontalAlignment="Left" Margin="754,522,0,0" VerticalAlignment="Top" Width="84" Click="testEmailButton_Click"/>
-        <Button x:Name="testTweetButton" Content="Test Tweet" HorizontalAlignment="Left" Margin="891,522,0,0" VerticalAlignment="Top" Width="85" Click="testTweetButton_Click"/>
-        <Button x:Name="testSIREmailButton" Content="Test SIR Email" HorizontalAlignment="Left" Margin="754,561,0,0" VerticalAlignment="Top" Width="84" Click="testSIREmailButton_Click"/>
+        <Rectangle HorizontalAlignment="Center" Height="24" Margin="0,-3,0,0" Stroke="Black" VerticalAlignment="Top" Width="722" Fill="#FFE62540"/>
     </Grid>
 </Window>
