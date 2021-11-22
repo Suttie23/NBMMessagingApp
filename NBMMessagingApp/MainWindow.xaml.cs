@@ -168,6 +168,9 @@ namespace NBMMessagingApp
             MessageBox.Show(String.Join("\n", mentionList), "MENTIONS");
 
             countHash();
+
+            toJSON();
+
         }
 
         private void testSMSButton_Click(object sender, RoutedEventArgs e)
@@ -332,6 +335,56 @@ namespace NBMMessagingApp
 
         private void countHash()
         {
+        }
+
+        private void toJSON()
+        {
+            var jsonSMSFormattedContent = Newtonsoft.Json.JsonConvert.SerializeObject(msgList);
+            string fileName = @"C:\Users\Suttie\source\repos\NBMMessagingApp\NBMMessagingApp\SMS.json";
+
+            if (System.IO.File.Exists(fileName) == false)
+            {
+                System.IO.File.WriteAllText(fileName, jsonSMSFormattedContent);
+            } else
+            {
+                System.IO.File.Delete(fileName);
+            }
+
+            var jsonEmailFormattedContent = Newtonsoft.Json.JsonConvert.SerializeObject(emailList);
+            string fileName2 = @"C:\Users\Suttie\source\repos\NBMMessagingApp\NBMMessagingApp\Email.json";
+
+            if (System.IO.File.Exists(fileName2) == false)
+            {
+                System.IO.File.WriteAllText(fileName2, jsonEmailFormattedContent);
+            }
+            else
+            {
+                System.IO.File.Delete(fileName2);
+            }
+
+            var jsonSIREmailFormattedContent = Newtonsoft.Json.JsonConvert.SerializeObject(SIREmailList);
+            string fileName3 = @"C:\Users\Suttie\source\repos\NBMMessagingApp\NBMMessagingApp\SIREmail.json";
+
+            if (System.IO.File.Exists(fileName3) == false)
+            {
+                System.IO.File.WriteAllText(fileName3, jsonSIREmailFormattedContent);
+            }
+            else
+            {
+                System.IO.File.Delete(fileName3);
+            }
+
+            var jsonTweetFormattedContent = Newtonsoft.Json.JsonConvert.SerializeObject(tweetList);
+            string fileName4 = @"C:\Users\Suttie\source\repos\NBMMessagingApp\NBMMessagingApp\Tweet.json";
+
+            if (System.IO.File.Exists(fileName4) == false)
+            {
+                System.IO.File.WriteAllText(fileName4, jsonTweetFormattedContent);
+            }
+            else
+            {
+                System.IO.File.Delete(fileName4);
+            }
         }
 
 
