@@ -4,7 +4,7 @@ using System.Text;
 
 namespace NBMMessagingApp
 {
-    class SIREmail : Message
+    public class SIREmail : Message
     {
 
         // Getters / Setters

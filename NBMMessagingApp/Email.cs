@@ -4,7 +4,7 @@ using System.Text;
 
 namespace NBMMessagingApp
 {
-    class Email : Message
+    public class Email : Message
     {
         // Getters / Setter
         public string messageSubject { get; set; }

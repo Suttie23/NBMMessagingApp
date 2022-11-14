@@ -32,7 +32,7 @@ namespace NBMMessagingApp
 
         List<Tweet> tweetList = new List<Tweet>();
         List<string> hashTagList = new List<string>();
-        SortedDictionary<int, string> trendList = new SortedDictionary<int, string>();
+        Dictionary<string, int> trendList = new Dictionary<string, int>();
         List<string> mentionList = new List<string>();
 
         public MainWindow()
@@ -53,6 +53,8 @@ namespace NBMMessagingApp
             incidentComboBox.Items.Add("Suspicious Incident");
             incidentComboBox.Items.Add("Intelligence");
             incidentComboBox.Items.Add("Cash Loss");
+
+            resetFiles();
 
         }
 
@@ -104,7 +106,15 @@ namespace NBMMessagingApp
                         if (validSIR == true)
                         {
                             SIREmailList.Add(new SIREmail(msgSender, msgSubject, msgBody, msgID, messageType, msgSortCode, msgIncidentType));
-                            MessageBox.Show("SIR email sent", "SUCCESS");
+                            string fileName = @"C:\Users\Suttie\Desktop\NBMMessagingApp-3860869dc95f3281eccea13f70f8d7ec9db90a21\JSONSIREmail.json";
+                            string json = JsonConvert.SerializeObject(SIREmailList, Formatting.Indented);
+
+                            using StreamWriter sw = new StreamWriter(fileName);
+                            sw.WriteLine(json);
+                            sw.Close();
+
+
+                            MessageBox.Show(json);
                         }
 
 
@@ -120,8 +130,18 @@ namespace NBMMessagingApp
                 // If the message did not contain SIR, create a normal email
                 else
                 {
-                    MessageBox.Show("Email sent", "SUCCESS");
-                    emailList.Add(new Email(msgSender, msgSubject, msgBody, msgID, messageType));
+                    {
+                        emailList.Add(new Email(msgSender, msgSubject, msgBody, msgID, messageType));
+                        string fileName = @"C:\Users\Suttie\Desktop\NBMMessagingApp-3860869dc95f3281eccea13f70f8d7ec9db90a21\JSONEmail.json";
+                        string json = JsonConvert.SerializeObject(emailList, Formatting.Indented);
+
+                        using StreamWriter sw = new StreamWriter(fileName);
+                        sw.WriteLine(json);
+                        sw.Close();
+
+
+                        MessageBox.Show(json);
+                    }
                 }
 
             } 
@@ -130,8 +150,18 @@ namespace NBMMessagingApp
             {
                 // Create SMS message
                 messageType = "S";
-                MessageBox.Show("SMS sent", "SUCCESS");
+
+
                 msgList.Add(new Message(msgSender, msgBody, msgID, messageType));
+                string fileName = @"C:\Users\Suttie\Desktop\NBMMessagingApp-3860869dc95f3281eccea13f70f8d7ec9db90a21\JSON\SMS.json";
+                string json = JsonConvert.SerializeObject(msgList, Formatting.Indented);
+
+                using StreamWriter sw = new StreamWriter(fileName);
+                sw.WriteLine(json);
+                sw.Close();
+
+
+                MessageBox.Show(json);
             } 
             // If the sender was not an email OR SMS, check if it matches a Tweet
             else if (msgSender.Substring(0, 1).Equals("@"))
@@ -161,8 +191,15 @@ namespace NBMMessagingApp
                 }
 
                 // Create a new Tweet
-                MessageBox.Show("Tweet sent", "SUCCESS");
                 tweetList.Add(new Tweet(msgSender, msgBody, msgID, messageType));
+                string fileName = @"C:\Users\Suttie\Desktop\NBMMessagingApp-3860869dc95f3281eccea13f70f8d7ec9db90a21\JSON\Tweet.json";
+                string json = JsonConvert.SerializeObject(tweetList, Formatting.Indented);
+
+                using StreamWriter sw = new StreamWriter(fileName);
+                sw.WriteLine(json);
+                sw.Close();
+           
+                MessageBox.Show(json);
 
             }
             // If sender does not match any accepted format, display an error.
@@ -190,11 +227,10 @@ namespace NBMMessagingApp
 
             MessageBox.Show(SIRLine, "SIR LIST");
             countHash();
-            MessageBox.Show(String.Join("\n", trendList.Reverse()), "TRENDING ON TWITTER");
+            var orderTrend = trendList.OrderBy(x => x.Value).ToDictionary(x => x.Key, x => x.Value);
+            MessageBox.Show(String.Join("\n", orderTrend.Reverse()), "TRENDING ON TWITTER");
             MessageBox.Show(String.Join("\n", mentionList), "MENTIONS");
 
-
-            toJSON();
             System.Windows.Application.Current.Shutdown();
 
         }
@@ -335,69 +371,53 @@ namespace NBMMessagingApp
         private void countHash()
         {
 
-            var q = from x in hashTagList
-                    group x by x into g
-                    let count = g.Count()
-                    orderby count descending
-                    select new { Value = g.Key, Count = count };
-            foreach (var x in q)
+            hashTagList.ForEach(e =>
             {
-                trendList.Add(x.Count, x.Value);
+                if (trendList.ContainsKey(e))
+                {
+                    trendList[e]++;
+                } else
+                {
+                    trendList[e] = 1;
+                }
             }
+          );
+            
 
         }
 
         // Method to write all object lists to JSON format
-        private void toJSON()
+        private void resetFiles()
         {
-            //SMS to JSON
-            var jsonSMSFormattedContent = Newtonsoft.Json.JsonConvert.SerializeObject(msgList);
-            string fileName = @"C:\Users\Suttie\source\repos\NBMMessagingApp\NBMMessagingApp\JSON Files\SMS.json";
 
-            if (System.IO.File.Exists(fileName) == false)
-            {
-                System.IO.File.WriteAllText(fileName, jsonSMSFormattedContent);
-            } else
+            
+            string fileName = @"C:\Users\Suttie\Desktop\NBMMessagingApp-3860869dc95f3281eccea13f70f8d7ec9db90a21\JSON\SMS.json";
+
+            if (System.IO.File.Exists(fileName) == true)
             {
                 System.IO.File.Delete(fileName);
             }
             
-            //Email to JSON
-            var jsonEmailFormattedContent = Newtonsoft.Json.JsonConvert.SerializeObject(emailList);
-            string fileName2 = @"C:\Users\Suttie\source\repos\NBMMessagingApp\NBMMessagingApp\JSON Files\Email.json";
+            
 
-            if (System.IO.File.Exists(fileName2) == false)
-            {
-                System.IO.File.WriteAllText(fileName2, jsonEmailFormattedContent);
-            }
-            else
+            string fileName2 = @"C:\Users\Suttie\Desktop\NBMMessagingApp-3860869dc95f3281eccea13f70f8d7ec9db90a21\JSON\Email.json";
+
+            if (System.IO.File.Exists(fileName2) == true)
             {
                 System.IO.File.Delete(fileName2);
             }
 
-            //SIR Email to JSON
-            var jsonSIREmailFormattedContent = Newtonsoft.Json.JsonConvert.SerializeObject(SIREmailList);
-            string fileName3 = @"C:\Users\Suttie\source\repos\NBMMessagingApp\NBMMessagingApp\JSON Files\SIREmail.json";
+            string fileName3 = @"C:\Users\Suttie\Desktop\NBMMessagingApp-3860869dc95f3281eccea13f70f8d7ec9db90a21\JSON\SIR.json";
 
-            if (System.IO.File.Exists(fileName3) == false)
-            {
-                System.IO.File.WriteAllText(fileName3, jsonSIREmailFormattedContent);
-            }
-            else
+            if (System.IO.File.Exists(fileName3) == true)
             {
                 System.IO.File.Delete(fileName3);
             }
 
-            // Tweet to JSON
-            var jsonTweetFormattedContent = Newtonsoft.Json.JsonConvert.SerializeObject(tweetList);
-            string fileName4 = @"C:\Users\Suttie\source\repos\NBMMessagingApp\NBMMessagingApp\JSON Files\Tweet.json";
+            string fileName4 = @"C:\Users\Suttie\Desktop\NBMMessagingApp-3860869dc95f3281eccea13f70f8d7ec9db90a21\JSON\Tweet.json";
 
-            if (System.IO.File.Exists(fileName4) == false)
-            {
-                System.IO.File.WriteAllText(fileName4, jsonTweetFormattedContent);
-            }
-            else
-            {
+            if (System.IO.File.Exists(fileName4) == true)
+            {             
                 System.IO.File.Delete(fileName4);
             }
         }

@@ -5,7 +5,7 @@ using System.Text;
 namespace NBMMessagingApp
 {
 
-    class Tweet : Message
+    public class Tweet : Message
     {
         // Getters / Setters
         public string hashTags { get; set; }
@@ -27,7 +27,7 @@ namespace NBMMessagingApp
             {
                 if (tags[i].Contains("#"))
                 {
-                    hashTags = hashTags + tags[i];
+                    hashTags = hashTags + tags[i] + " ";
                 }            
 
             }
